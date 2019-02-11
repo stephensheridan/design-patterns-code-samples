@@ -1,5 +1,5 @@
 
-// Concrete product
+// Concrete product A
 public class MSWindow extends Window{
   MSWindow(String text){this.title = text;}
 

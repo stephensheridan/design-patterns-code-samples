@@ -1,4 +1,4 @@
-// Concrete product
+// Concrete product B
 public class MacOSXWindow extends Window{
   MacOSXWindow(String text){this.title = text;}
 
