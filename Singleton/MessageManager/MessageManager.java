@@ -1,28 +1,23 @@
 import java.io.*;
 import java.net.*;
 
-class MessageManager
-{
+class MessageManager{
 	// This will be the one and only MessageManager instance
 	private static MessageManager manager;
 	private static DatagramSocket dsock;
 
-	private MessageManager()
-	{
-		try
-		{
+	private MessageManager(){
+		try{
 			dsock = new DatagramSocket();
 		}
-		catch(IOException e)
-		{
+		catch(IOException e){
 			System.out.println(e.toString());
 		}
 	}
 
-	// Public synchronized method which will return a
+	// Public synchronized method which returns a
 	// MessageManager
-	public static synchronized MessageManager getManager()
-	{
+	public static synchronized MessageManager getManager(){
 		// If true then we need to create an instance of
 		// WindowManager
 		if (manager == null)
