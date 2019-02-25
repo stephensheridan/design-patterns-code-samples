@@ -3,9 +3,10 @@ public class PersonClient{
 
         // Create the person using the builder pattern
         Person person = new Person.Builder("Paul", "Smyth")
-            .setAge(5)
+            .setAge(45)
+            .setMothersName("Julie")
             .setHeight(6)
-            .setAge(19)
+            .setWeight(80)
             .build();
 
         // Display the persons details
