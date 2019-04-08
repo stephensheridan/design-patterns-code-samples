@@ -1,8 +1,9 @@
 import java.io.*;
 
 public class Client{
+
 	public static void main(String[] args)	{
-		ScreenAdapter scr = new ScreenAdapter();
+		Screen scr = new Screen();
         scr.writeInt(10);
 		scr.nextLine();
 		scr.writeInt(20);
