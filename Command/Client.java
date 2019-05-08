@@ -1,16 +1,15 @@
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 //In this version, the Command objects are external classes
 //and we pass them copies of the Frame instance
 //in their constructor
-public class Client extends Frame implements ActionListener{
+public class Client extends JFrame{
    private Menu mnuFile;
-   private fileOpenCommand mnuOpen;
-   private fileExitCommand mnuExit;
-   private btnRedCommand btnRed;
-   private Panel p;
-   private Frame fr;
+   private MenuItem mnuOpen;
+   private MenuItem mnuExit;
+   private JButton btnOpen;
 
    public Client(){
       super("Frame with external commands");
@@ -19,33 +18,44 @@ public class Client extends Frame implements ActionListener{
       setMenuBar(mbar);
       mnuFile = new Menu("File", true);
       mbar.add(mnuFile);
-
-      // Create the command menu items
-      mnuOpen = new fileOpenCommand("Open...", this);
+      mnuOpen = new MenuItem("Open...");
       mnuFile.add(mnuOpen);
-      mnuExit = new fileExitCommand("Exit");
+      mnuExit = new MenuItem("Exit");
       mnuFile.add(mnuExit);
-      // Add actionListeners
-      mnuOpen.addActionListener(this);
-      mnuExit.addActionListener(this);
-      // Create a panel for the button
-      p = new Panel();
+      btnOpen = new JButton("Open");
+
+      JFrame frm = this;
+
+      mnuOpen.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+               executeCommand(new OpenCommand(frm));
+            }
+        });
+
+      mnuExit.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+               executeCommand(new ExitCommand(frm));
+            }
+        });
+
+      btnOpen.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+               executeCommand(new OpenCommand(frm));
+            }
+        });
+
+      JPanel p = new JPanel();
       add(p);
-      // Create the command button
-      btnRed = new btnRedCommand("Red", p);
-      // Add it to the panel
-      p.add(btnRed);
-      // Add actionListeners
-      btnRed.addActionListener(this);
+      p.add(btnOpen);
 
       // Setup the window
-      setBounds(100,100,200,100);
-      setVisible(true);
+      setSize(400,450);
+      show();
    }
 
-   public void actionPerformed(ActionEvent e){
-      Command obj = (Command)e.getSource();
-      obj.Execute();
+   private void executeCommand(Command command){
+      // We could keep a command history in a stack here
+      command.Execute();
    }
 
    static public void main(String argv[]){
@@ -53,33 +63,18 @@ public class Client extends Frame implements ActionListener{
    }
 }
 
-class btnRedCommand extends Button implements Command{
-   private Panel p;
-   public btnRedCommand(String caption, Panel pnl){
-      super(caption);
-      p = pnl;
-   }
+class OpenCommand implements Command{
+   private JFrame parent;
+   OpenCommand(JFrame parent){this.parent = parent;}
    public void Execute(){
-      p.setBackground(Color.red);
-   }
-}
-
-class fileOpenCommand extends MenuItem implements Command{
-   private Frame fr;
-   public fileOpenCommand(String caption, Frame frm){
-      super(caption);
-      fr = frm;
-   }
-   public void Execute(){
-      FileDialog fDlg=new FileDialog(fr,"Open file");
+      FileDialog fDlg=new FileDialog(parent,"Open file");
       fDlg.show();
    }
 }
 
-class fileExitCommand extends MenuItem implements Command{
-   public fileExitCommand(String caption){
-      super(caption);
-   }
+class ExitCommand implements Command{
+   private JFrame parent;
+   ExitCommand(JFrame parent){this.parent = parent;}
    public void Execute(){
       System.exit(0);
    }

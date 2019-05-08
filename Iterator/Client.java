@@ -10,6 +10,13 @@ class Client{
 		data.addElement("Alan"); data.addElement("Joanne");
 		data.addElement("John"); data.addElement("Martin");
 	}
+	public void listNames(){
+		Enumeration e = data.elements();
+		while(e.hasMoreElements()){
+			String s = (String)e.nextElement();
+			System.out.println(s);
+		}
+	}
 	public void filterNames(){
 		filter = new Filter(data.elements(), "J");
 		while(filter.hasMoreElements()){
@@ -19,6 +26,9 @@ class Client{
 	}
 	public static void main(String[] args){
 		Client app = new Client();
+		System.out.println("All names");
+		app.listNames();
+		System.out.println("Filtered names");
 		app.filterNames();
 	}
 }
